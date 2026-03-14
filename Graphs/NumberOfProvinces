@@ -1,0 +1,37 @@
+'''
+Problem : Number of Provinces
+Platform : Leetcode
+Pattern : DFS
+
+Problem asked to return number of provinces.
+A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+So we can use DFS to go through all the connected nodes and count them as one group and return the count
+
+Time complexity: O(n*n) 
+- we will visit every node atleast one time
+Space complexity: O(n*n) 
+- Adjacency list storage and visited set.
+'''
+
+class Solution:
+    def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        h={}
+        n=len(isConnected)
+        for i in range(0,n):
+            h[i]=[]
+        for i in range(0,n):
+            for j in range(0,n):
+                if i!=j and isConnected[i][j]==1:
+                    h[i].append(j)
+        isVisited=set()
+        s=0
+        def dfs(node):
+            isVisited.add(node)
+            for i in h[node]:
+                if i not in isVisited:
+                    dfs(i)
+        for i in h:
+            if i not in isVisited:
+                dfs(i)
+                s+=1
+        return s
