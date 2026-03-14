@@ -1,0 +1,43 @@
+'''
+Problem : Max area of Island
+Platform : Leetcode
+Pattern : DFS
+
+The Problem asked to return the maximum area of the island
+We can use DFS to go to the connected nodes and count the nodes to get the area
+Then return maximum of them
+
+Time Complexity: O(m*n)
+- We will visit all the connected nodes
+Space Complexity : O(m*n)
+- In the worst case the visited set may store all grid cells,
+and the recursion stack may grow up to the size of the island.
+'''
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        visited =set()
+        m=len(grid)
+        n=len(grid[0])
+        def dfs(i,j,s):
+            if (i,j) not in visited:
+                visited.add((i,j))
+                s+=grid[i][j]
+            if j+1<n and grid[i][j+1]==1 and (i,j+1) not in visited:
+                s=dfs(i,j+1,s)
+            if i+1<m and grid[i+1][j]==1 and (i+1,j) not in visited:
+                s=dfs(i+1,j,s)  
+            if j-1>=0 and grid[i][j-1]==1 and (i,j-1) not in visited:
+                s=dfs(i,j-1,s)
+            if i-1>=0 and grid[i-1][j]==1 and (i-1,j) not in visited:
+                s=dfs(i-1,j,s)
+            return s
+        result=0
+        r=0
+        s=0
+        for i in range(0,m):
+            for j in range(0,n):
+                if grid[i][j]==1 and  (i,j) not in visited:
+                    r=dfs(i,j,s)
+                    result=max(result,r)
+        return result
